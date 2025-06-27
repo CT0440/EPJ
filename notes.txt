@@ -1,0 +1,12 @@
+Foundation of Enterprise Programming:
+JDBC, JDBC architecture, JDBC with Oracle, MySql, Maven: integration with eclipse, POM.xml
+
+My Drive Link: https://drive.google.com/drive/u/0/folders/1V9N794hltagqZ4cytsvOqbYbtgJYwpzt
+
+Installations
+-------------
+1. JDK21
+2. Eclipse for Enterprise Web Developers
+3. MySQL(Custom)-server, workbench
+
+
