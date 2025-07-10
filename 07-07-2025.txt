@@ -1,0 +1,176 @@
+Servlet API
+-----------
+The Servlet API is a set of Java interfaces and classes. It provides the foundation for creating Servlets—which are Java programs that run on a server and handle HTTP requests. These servlets allow us to create dynamic web content, meaning content that can change based on user input or server-side logic.
+
+Now, let's look at some important interfaces in the Servlet API:
+
+Servlet: The core interface every servlet must implement.
+
+ServletRequest: Used to get information about the client request, like form data, headers, etc.
+
+ServletResponse: Used to generate a response back to the client.
+
+HttpSession: Helps maintain user session data across multiple requests.
+
+ServletConfig: Provides configuration information to a servlet from the deployment descriptor (web.xml).
+
+ServletContext: Represents 0the entire web application and allows servlets to share information.
+
+RequestDispatcher: Helps in forwarding a request to another resource or including content from another resource.
+
+Together, these interfaces make up the tools we use to build powerful, server-side web applications in Java."
+
+The Servlet interface is the core interface of the Java Servlet API. It defines a standard contract that every servlet must follow in order to handle web-based requests in a Java web application.
+
+🔹 Under Purpose, the slide explains that implementing the Servlet interface allows a Java class to:
+
+Be managed by a web server, such as Apache Tomcat.
+
+Handle client requests, typically from a browser.
+
+Generate responses, such as HTML pages or data.
+
+Follow a defined lifecycle, which includes three important methods:
+init() – for initialization,
+service() – for processing requests, and
+destroy() – for cleanup before removal.
+
+This makes the Servlet interface essential for building dynamic web applications in Java.
+
+Let’s understand the Servlet Life Cycle, which describes how a servlet behaves from the moment it’s created until it is removed from service and garbage collected.
+
+Think of a servlet as a waiter in a restaurant:
+
+Loading and Instantiation – The restaurant hires the waiter (the servlet container loads the class and creates an object).
+
+Initialization (init() method) – The waiter is trained before service starts. Similarly, the servlet runs its init() method once for any one-time setup.
+
+Request Handling (service() method) – Every time a customer places an order, the waiter serves them. Likewise, the servlet's service() method handles each client request.
+
+Destruction (destroy() method) – At the end of the day, the waiter cleans up before leaving. The servlet also performs cleanup in the destroy() method when it’s about to be removed.
+
+Garbage Collection – After destruction, the servlet object is eligible for garbage collection—just like the waiter leaving the restaurant.
+
+Now, if you look at the slide:
+
+The title “From Creation to Destruction: Servlet Life Cycle” matches our step-by-step explanation.
+
+On the left, you see the 5 stages clearly listed.
+
+On the right, there’s a simple flow diagram that shows how the servlet moves through each state, starting from loading to destruction.
+
+"Let’s break down what this slide is showing us about how servlets work in a web application."
+
+1. Starting Point – The Web Server
+"On the left, we have the Apache Tomcat Web Server. This is where everything begins. When a user sends a request (like submitting a form or clicking a link), it goes to the server."
+
+🔹 "The server uses a configuration file called web.xml to figure out which servlet should handle the request."
+
+2. ServletRequest – Receiving the Client's Request
+"Once the servlet is identified, the server creates a ServletRequest object. This object is like a container that holds all the information from the user’s request, such as:"
+
+What form data was sent (like username or password)
+
+What HTTP method was used (GET or POST)
+
+What browser they’re using (headers)
+
+🔸 "This object is sent to the servlet, which reads this data to figure out what the user wants."
+
+3. ServletResponse – Sending the Server's Reply
+"After understanding the request, the servlet prepares a response. For that, it uses another object: ServletResponse."
+
+🔹 "This is like a toolkit the servlet uses to send information back to the client, such as:"
+
+HTML content
+
+Text messages
+
+File downloads
+
+🔸 "Methods like getWriter() or setContentType() help build the response."
+
+4. The Servlet – The Middleman
+"The servlet sits in the middle of this communication. It receives the request object, processes the logic, and prepares a response using the response object."
+
+📍 "Think of it like a restaurant waiter:
+
+The request is your food order.
+
+The servlet is the waiter.
+
+The response is the dish that’s served to you."
+
+5. No Direct Communication
+"Lastly, notice that ServletRequest and ServletResponse do not talk to each other directly. They are just tools used by the servlet. The servlet reads from the request and writes to the response."
+
+🧠 Summary for Students:
+ServletRequest = Reads input from client
+
+ServletResponse = Sends output to client
+
+Servlet = Uses both to process the request and respond
+
+
+getParameter(String name) This method is used to fetch the value of a form field submitted by the client. 👉 For example, if a user submits a form with a username field, you can retrieve it using: 
+ String username = request.getParameter("username");
+
+ getHeader(String name) 
+This method allows you to retrieve header information sent by the client’s browser. 
+👉 For instance, to check what type of browser is being used:
+ String userAgent = request.getHeader("User-Agent"); getMethod() This method tells you which HTTP method (GET, POST, etc.) the client used to send the request. 
+
+👉 Example usage: 
+String method = request.getMethod(); // Returns "GET" or "POST" 
+
+
+
+🟦 ServletResponse
+getWriter() This method returns a PrintWriter object that allows the servlet to send character data (like HTML or plain text) back to the client. 👉 Example: PrintWriter out = response.getWriter(); out.println("hello user");
+
+ setContentType(String type)
+ This method is used to set the type of content the response will send (like HTML, JSON, plain text, etc.). 👉 Example:
+ response.setContentType("text/html");
+
+ getOutputStream() This method provides a binary output stream to send images, PDFs, or other binary files to the client. 
+👉 Example:  ServletOutputStream out = response.getOutputStream();
+
+
+"Alright students, now let’s understand the difference between XML and Annotation configuration in Servlets — not with code, but with a simple and fun analogy.
+
+🔸 Look at the top part of the slide.
+Think of the XML approach like a manifest book — a centralized place where everything is neatly written and documented. Just like writing all your plans in a notebook. This is how traditional configuration works — everything is written in one file, web.xml, and you manage all your servlet setup there. It’s organized, but it takes time and you need to go back and forth to edit things.
+
+🔸 Now, look at the bottom part.
+Here we have annotations, and the analogy here is using sticky notes. Imagine instead of writing in a big manifest book, you stick little notes directly on the pages or objects. That’s what annotations do — you write configuration right above the class or method itself using @WebServlet and other annotations. It’s fast, localized, and modern — that’s why it's called the modern approach.
+
+✅ So remember:
+
+XML = One big book where you write all rules in one place – traditional but structured.
+
+Annotations = Sticky notes attached to specific places – quick, readable, and developer-friendly.
+
+That’s how the two compare in real-world terms. It helps you remember that XML is centralized, while Annotations are more direct and distributed."
+
+
+"Let’s now understand how servlets were traditionally configured using XML before annotations became popular.
+
+On the left, you see the Java file named MyServlet.java. This is our servlet class where we write the business logic. It extends HttpServlet and contains methods like doGet() to handle requests.
+
+On the right side, we have the web.xml file, also known as the deployment descriptor. This file is placed inside the WEB-INF folder.
+
+Here’s what happens:
+
+Inside web.xml, we use the <servlet> tag to declare the servlet:
+
+We give it a name: MyServlet.
+
+We specify the fully qualified class name: com.example.MyServlet.
+
+Then, using <servlet-mapping>, we connect this servlet to a URL pattern:
+
+Again, refer to the servlet name.
+
+Set the URL pattern as /xml. This means when someone hits localhost:8080/yourApp/xml, this servlet will be executed.
+
+So in summary, web.xml acts like a map – it tells the server which class should respond to which URL. This is the traditional way of servlet configuration before annotations like @WebServlet were introduced."000

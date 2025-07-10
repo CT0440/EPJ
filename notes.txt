@@ -1,202 +1,217 @@
-Foundation of Enterprise Programming:
-JDBC, JDBC architecture, JDBC with Oracle, MySql, Maven: integration with eclipse, POM.xml
+==============================
+1. JDBC (Java Database Connectivity)
+==============================
 
-My Drive Link: https://drive.google.com/drive/u/0/folders/1V9N794hltagqZ4cytsvOqbYbtgJYwpzt
+► What is JDBC?
 
-Installations
--------------
-1. JDK21
-2. Eclipse for Enterprise Web Developers
-3. MySQL(Custom)-server, workbench
+JDBC is an API in Java that allows interaction with relational databases
+(like MySQL, Oracle, PostgreSQL, etc.) using SQL statements.
 
+► Why use JDBC?
 
-1.JDK21:
---------
-* Enter JDK 21 Download in Google.
-(or) open this Link https://www.oracle.com/java/technologies/downloads/
+- Send queries to the database
+- Insert, retrieve, update, delete data
+- Platform-independent
+- Built-in Java support (in java.sql package)
 
-* for Windows user select JDK21 then Click on Windows then Click on x64 MSI Installer
-(or)https://download.oracle.com/java/21/latest/jdk-21_windows-x64_bin.msi (sha256) 
-download by clicking on this link then JDK windows bin Installer will download 
->click on YES > Next>Next like this At last Finish, JDK21 is Download into your C drive Program files.
+► Core Steps to use JDBC:
 
-* Click on Windows> Goto Environment Variables>select Environment variables>
-System variables>click on path>Edit>paste the copies path i.e C:\Program Files\Java\jdk-21 then Ok, ok, close.
+1. Load and register the JDBC driver
+2. Establish a connection using Connection class
+3. Create a statement using Statement or PreparedStatement
+4. Execute query using executeQuery() or executeUpdate()
+5. Process ResultSet (if any)
+6. Close the connection
 
-Syllabus:
-foundation of Enterprise Programming:
-JDBC, JDBC architecture, JDBC with Oracle, MySql, Maven: integration with eclipse, POM.xml
-reference Books: Java Enterprise in a Nutshell" by Jim Farley, William Crawford, and David Flanagan (Textbook)
-
-
-JDBC
------
-* JDBC is JAVA API that enables Java Applications to interact with Databases.
-* it allows Java programs to connect to a database, run queries, retrieve, and manipulate data.
-Because of JDBC, Java applications can easily work with different relational databases like MySQL, Oracle, PostgreSQL, and more
+► Required Packages:
+- java.sql.*
+- javax.sql.* (for advanced use)
 
 
-			Application(Java Servlet, Applet etc)
-					|
+==============================
+2. JDBC ARCHITECTURE
+==============================
 
-					|
+JDBC has two layers:
 
-				     JDBC API
+1. JDBC API (used by the Java developer)
+2. JDBC Driver (provided by DB vendors)
 
-					|
-					
-					|
-			
-				 JDBC Driver Manager
+► Layers:
 
-					|
-	---------------------------------------------------------------------
-	|				|				    |
-	
-	SQL Server		       Oracle				Data Source
+[Java Application]
+     |
+[JDBC API]
+     |
+[JDBC Driver Manager]
+     |
+[JDBC Driver]
+     |
+[Database]
 
-Explanation: 
--------------
+► JDBC Driver Types:
 
-Application: It can be a Java application or servlet that communicates with a data source.
+1. Type-1: JDBC-ODBC Bridge (Outdated)
+2. Type-2: Native API driver (uses native C libraries)
+3. Type-3: Network Protocol driver (middleware)
+4. Type-4: Thin driver (pure Java — most popular)
 
-The JDBC API: It allows Java programs to execute SQL queries and get results from the database. Some key components of JDBC API include
-Interfaces like Driver, ResultSet, RowSet, PreparedStatement, and Connection that helps managing different database tasks.
-Classes like DriverManager, Types, Blob, and Clob that helps managing database connections.
+► Common JDBC Classes:
 
-DriverManager: It plays an important role in the JDBC architecture. It uses some database-specific drivers to effectively connect enterprise applications to databases.
-JDBC drivers: These drivers handle interactions between the application and the database.
-
-JDBC Architecture
-------------------
-JDBC architecture consists of two layers:
-1. JDBC API:
-
-Interfaces like Connection, Statement, ResultSet, etc.
-Used by Java applications to interact with the database.
-
-2. JDBC Driver:
-
-Translates JDBC calls into database-specific calls.
-Types of JDBC Drivers:
-
-Type 1: JDBC-ODBC Bridge
-
-Type 2: Native API driver
-
-Type 3: Network Protocol driver
-
-Type 4: Thin driver (pure Java) – commonly used
+- DriverManager
+- Connection
+- Statement
+- PreparedStatement
+- ResultSet
+- CallableStatement (for stored procedures)
 
 
-Steps to Use JDBC
-------------------
-1. Load the driver class.
-Class.forName("com.mysql.cj.jdbc.Driver");
+==============================
+3. JDBC WITH ORACLE
+==============================
 
-2. Establish connection.
+► Requirements:
+- Oracle Database installed or accessible
+- ojdbc8.jar or ojdbc11.jar added to classpath
 
-String url = "jdbc:mysql://localhost:3306/test?user=root&password=root";
-Connection con = DriverManager.getConnection(url);
+► JDBC URL format (for Oracle):
+jdbc:oracle:thin:@host:port:dbname
 
-3. Create statement.
-Statement stmt = con.createStatement();
+► Example:
+jdbc:oracle:thin:@localhost:1521:xe
 
-4. Execute query.
-stmt.executeUpdate(createTable);
+► Sample Code:
 
-5. Process results.
+import java.sql.*;
 
-6. Close the connection.
-stmt.close();
-con.close();
+public class OracleExample {
+    public static void main(String args[]) throws Exception {
+        Class.forName("oracle.jdbc.driver.OracleDriver");
+        Connection con = DriverManager.getConnection(
+          "jdbc:oracle:thin:@localhost:1521:xe", "system", "oracle");
+
+        Statement st = con.createStatement();
+        ResultSet rs = st.executeQuery("SELECT * FROM employees");
+
+        while (rs.next()) {
+            System.out.println(rs.getString("name"));
+        }
+
+        con.close();
+    }
+}
 
 
 
-Maven Integration with Eclipse
--------------------------------
 
-What is Maven?
----------------
-Maven is Build Automation and Project Management tool for Java Project.
-It uses an XML file called pom.xml(Project Object Model) to manage dependencies,
-Project Structure, and Build configurations.
+==============================
+4. JDBC WITH MYSQL
+==============================
 
-* It Downloads the libraries (dependencies) you need.
-* Compiles your code.
-* Runs your tests.
-* Packages your app (e.g., into a .jar or .war file).
-* Deploys your application if needed.
+► Requirements:
+- MySQL DB installed
+- mysql-connector-java-8.x.jar in classpath
 
+► JDBC URL:
+jdbc:mysql://localhost:3306/dbname
 
+► Sample Code:
 
-Why maven is Used?
-------------------
-✔ Avoid manually downloading libraries (e.g., JUnit, Spring, etc.).
+import java.sql.*;
 
-✔ Maintain consistency across builds.
+public class MySQLExample {
+    public static void main(String args[]) throws Exception {
+        Class.forName("com.mysql.cj.jdbc.Driver");
 
-✔ Automatically manage library versions.
+        Connection con = DriverManager.getConnection(
+          "jdbc:mysql://localhost:3306/testdb", "root", "password");
 
-✔ Build, test, and deploy your project with just one command (mvn install).
+        PreparedStatement ps = con.prepareStatement("SELECT * FROM student");
+        ResultSet rs = ps.executeQuery();
 
+        while (rs.next()) {
+            System.out.println(rs.getInt("id") + " " + rs.getString("name"));
+        }
 
-
-Where Should You Use Maven?
---------------------------
-* You are working on a Java project.
-* You want to automate builds and manage dependencies easily.
-* You are working in a team (Maven keeps things consistent).
-* You are using frameworks like Spring, Hibernate, or JUnit.
-
-Why We Switch to Maven Project?
--------------------------------
-IN Plain Java JDBC Project(non-Maven), you usually:
-* Manually Download JAR files(Like MYSQL connector)
-* Add them to your Project using Build path in Eclipse.
-* You have to Handle all the dependencies and versioning yourself.
-* It is Harder to Share or Build the Project on other Systems.
-
-But with Maven, You will get a Lot of Benefits.
-1. Automatic Dependency Management.
------------------------------------
-Example: To add MYSQL JDBC Driver
-xml
----
-<dependency>
-    <groupId>mysql</groupId>
-    <artifactId>mysql-connector-java</artifactId>
-    <version>8.0.33</version>
-</dependency>
-
-Note: Maven will download the correct JAR and include it in your Project Automatically.
+        con.close();
+    }
+}
 
 
+==============================
+5. MAVEN INTEGRATION WITH ECLIPSE
+==============================
 
-2. Standard Directory Structure
---------------------------------
-src
-	main
-		java  -> java source code
-		resources ->config files
-test -> unit test classes
-pom.xml -> project config & dependencies
+► What is Maven?
+
+Maven is a build automation tool used in Java. It manages:
+- Project structure
+- Dependencies (JARs)
+- Compilation, testing, packaging
+
+► Steps to Create Maven Project in Eclipse:
+
+1. Open Eclipse
+2. File → New → Maven Project
+3. Select archetype: maven-archetype-quickstart
+4. Enter:
+   - Group ID: com.example
+   - Artifact ID: myproject
+5. Maven will generate:
+
+project/
+ ├── src/main/java
+ ├── src/test/java
+ ├── pom.xml
+
+► Add dependencies in pom.xml to auto-download JARs
+
+► Build Options:
+- mvn clean
+- mvn compile
+- mvn package
+- mvn install
 
 
-3. Easy Build And Clean
-------------------------
-With Plain Java Project, You manually compile and Create JAR files.
-with maven Just run
+==============================
+6. POM.XML (Project Object Model)
+==============================
 
+► pom.xml is the heart of a Maven project.
+It contains information about the project, build process, and dependencies.
 
-What is POM.xml?
------------------
-* POM stands for Project Object Model.
-* It's an XML file that contains Project Configuration, including:
-> Project Details(name, version etc)
-> Dependencies(Libraries like JUnit, Spring, etc)
-> Build plugins(for compiling, packaging, testing)
-> Project modules(if it's a multi-module project)
-> Maven Goals and Build Phases
+► Structure of POM:
 
+<project>
+  <modelVersion>4.0.0</modelVersion>
 
+  <groupId>com.myapp</groupId>
+  <artifactId>ServletDemo</artifactId>
+  <version>1.0</version>
+  <packaging>war</packaging>
+
+  <dependencies>
+    <!-- MySQL JDBC Driver -->
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>8.0.33</version>
+    </dependency>
+
+    <!-- Servlet API -->
+    <dependency>
+      <groupId>jakarta.servlet</groupId>
+      <artifactId>jakarta.servlet-api</artifactId>
+      <version>6.0.0</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+</project>
+
+► Tags:
+
+- <groupId>: Unique org name (like domain)
+- <artifactId>: Project name
+- <version>: Current project version
+- <packaging>: jar / war
+- <dependencies>: List of all external libraries
